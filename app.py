@@ -428,8 +428,15 @@ def handle_json_form_data():
         term = form.term.data
 
         resp = requests.get(
-            f'https://perenual.com/api/species-list?key={API_KEY}&q={term}'
+            f'https://perenual.com/api/species-list',
+            params={
+                "key": API_KEY,
+                "q": term
+            }
         )
+        # note to self: might need API route to be '-list?'
+
+
         print('This is resp', resp)
         # for example, if we use API key and search for 'monstera':
         # https://perenual.com/api/species-list?key=sk-wfpE6589044314e5d3581&q=monstera
