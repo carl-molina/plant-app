@@ -3,20 +3,25 @@
 import os
 from dotenv import load_dotenv
 
+load_dotenv()
+
 from flask import (
-    Flask, render_template, session, flash, redirect, url_for, g, jsonify, request
+    Flask, render_template, session, flash, redirect, url_for, g, jsonify,
+    request
 )
+
+import requests
 
 from flask_debugtoolbar import DebugToolbarExtension
 from models import connect_db, db, User
 from forms import (
-    CSRFProtection
+    CSRFProtection, PlantSearchForm
 )
 
 from sqlalchemy.exc import IntegrityError
 # from utils import
 
-load_dotenv()
+API_KEY = os.environ['PERENUAL_API_KEY']
 
 app = Flask(__name__)
 
@@ -400,3 +405,41 @@ def handle_user_unliking():
     db.session.commit()
 
     return jsonify({"unliked": cafe_id})
+
+
+#######################################
+# plants routes
+
+
+@app.post('/api/get-plant-list')
+def handle_json_form_data():
+    """Takes in a JSON body with the following:
+
+        searchTerm: input value from user searching for plant
+
+    Interprets JSON data, sends requests to Perenual API, and returns JSON resp.
+    """
+
+    data = request.json
+
+    form = PlantSearchForm(obj=data)
+
+    if form.validate_on_submit():
+        term = form.term.data
+
+        resp = requests.get(
+            f'https://perenual.com/api/species-list?key={API_KEY}&q={term}'
+        )
+        print('This is resp', resp)
+        # for example, if we use API key and search for 'monstera':
+        # https://perenual.com/api/species-list?key=sk-wfpE6589044314e5d3581&q=monstera
+
+        plant_data = resp.json()
+        print('This is plant_data', plant_data)
+
+        print('This is plant_data jsonify', jsonify(plant_data))
+        return jsonify(plant_data)
+
+    else:
+        error = {key: val for key, val in form.errors.items()}
+        return jsonify(error=error)

@@ -5,6 +5,15 @@ from wtforms import StringField, TextAreaField, SelectField, PasswordField
 from wtforms.validators import InputRequired, URL, Optional, Email, Length
 
 
+class PlantSearchForm(FlaskForm):
+    """Form for searching for a plant."""
+
+    term = StringField(
+        "Search Term",
+        validators=[InputRequired(), Length(max=30)],
+    )
+
+
 class AddEditCafeForm(FlaskForm):
     """Form for adding/editing a cafe."""
 

@@ -7,20 +7,24 @@
 <div class="homepage">
   <h1 class="display-1">Plant App</h1>
   <h3 class="display-5">An App to Document Your Plant Journey</h3>
-  <a class="mt-5 btn btn-primary" href="/cafes">Search For Plants</a>
+  <!-- <a class="mt-5 btn btn-primary" href="/cafes">Search For Plants</a> -->
+
+
+  {% block searchbox %}
+    <form id="search-form" class="form" method="POST" action="/users">
+      <input
+          name="q"
+          class="form-control-lg"
+          placeholder="Search Warbler"
+          aria-label="Search"
+          id="plant-search">
+      <button class="btn btn-default search-btn">
+        <span class="bi bi-search"></span>
+      </button>
+    </form>
+{% endblock %}
+
+
 </div>
-
-<!-- <style>
-    body {
-      background: url(/static/images/homepage.jpg) no-repeat center center fixed;
-      background-size: cover;
-    }
-
-    .display-1, .display-5 {
-      color: white;
-      text-shadow: black 3px 3px !important;
-      letter-spacing: 0.05em
-    }
-</style> -->
 
 {% endblock %}

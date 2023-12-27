@@ -73,11 +73,11 @@ nav form.navbar-form {
   position: relative;
 }
 
-#search.form-control {
+#search.form-control-lg {
   border-radius: 20px;
   margin-bottom: 0;
-  width: 100%;
-  font-size: 13px;
+  width: 75%;
+  font-size: 28px;
   padding-right: 28px;
   box-sizing: border-box;
 }
@@ -89,11 +89,22 @@ nav form.navbar-form {
   bottom: 4px;
   z-index: 1;
   padding: 0;
-  color: #66757f;
 }
 
-#search.form-control + .btn:active,
-#search.form-control + .btn:focus {
+.search-btn {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.bi-search {
+  font-size: 28px;
+  color: #ECF39E;
+}
+
+#search.form-control-lg + .btn:active,
+#search.form-control-lg + .btn:focus {
   box-shadow: none;
 }
 
