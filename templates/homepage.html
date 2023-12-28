@@ -10,8 +10,7 @@
   <!-- <a class="mt-5 btn btn-primary" href="/cafes">Search For Plants</a> -->
 
 
-  {% block searchbox %}
-    <form id="search-form" class="form" method="POST" action="/users">
+    <form id="search-form" class="form">
       <input
           name="q"
           class="form-control-lg"
@@ -22,9 +21,10 @@
         <span class="bi bi-search"></span>
       </button>
     </form>
-{% endblock %}
-
 
 </div>
+
+<div id="resultsArea"></div>
+
 
 {% endblock %}

@@ -2,6 +2,8 @@
 
 const BASE_URL = '/api/get-plant-list';
 
+const $resultsArea = $("#resultsArea");
+const $searchForm = $("#search-form");
 
 /** processSearchForm: handle submission of form:
  *
@@ -56,12 +58,6 @@ async function processSearchForm(evt) {
   // separation of concerns; display plants is a UI concern
   // ^ this function is concerned w/ pulling data from the API instead of UI
 
-
-
-
-
-
-
   if (plantData['errors']) {
     removeError();
     removeResults();
@@ -74,6 +70,9 @@ async function processSearchForm(evt) {
     showResults(plantData);
   }
 }
+
+$searchForm.on("submit", processSearchForm);
+// FIXME: form not submitting correctly
 
 /** showError: shows error message in DOM. */
 
@@ -100,8 +99,8 @@ function removeResults() {
  *  individual plant
 */
 
-function showResults(data) {
-  for (const plant of data) {
+function showResults(plants) {
+  for (const plant of plants) {
     const result = generateResultsMarkup(plant);
     $resultsArea.append(result);
   }
@@ -112,7 +111,17 @@ function showResults(data) {
 
 function generateResultsMarkup(plant) {
   return `
-  <p>Your lucky number is ${num.num} (${num.fact}).</p>
-  <p>Your birth year (${year.year}) fact is ${year.fact}.</p>
+  <p>Your lucky number is ${plant.common_name} (${plant.common_name}).</p>
+  <p>Your birth year (${plant.common_name}) fact is ${plant.common_name}.</p>
   `;
 }
+
+
+async function processFormDataDisplayResults(evt) {
+  evt.preventDefault();
+  const plants = await processSearchForm();
+  showResults(plants);
+
+}
+
+// $searchForm.on("submit", processFormDataDisplayResults);
