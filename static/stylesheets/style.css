@@ -1,7 +1,7 @@
 /* ====================== General */
 
 body {
-  background-color: #31572C;
+  background-color: #90A955;
 }
 
 body.error-404 {
@@ -20,21 +20,42 @@ body.error-404 {
   cursor: pointer;
 }
 
+h1 {
+  color: #132A13;
+}
+
+h3 {
+  color: #132A13
+}
+
 /* ======================= Nav */
 
 .navbar {
   background-color: #132A13;
-  height: 46px;
+  height: 50px;
   border-bottom: 1px solid rgba(0, 0, 0, 0.25);
   margin-bottom: 1rem;
   position: relative;
   z-index: 9999;
+  display: flex;
+  align-items: center;
+}
+
+button.navbar-toggler {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+span.navbar-toggler-icon {
+  font-size: 0.75rem;
 }
 
 .navbar a {
   color: #66757f;
-  font-size: 13px;
+  font-size: 17px;
   font-weight: bold;
+  margin-right: 10px;
 }
 
 .navbar a:hover {
@@ -46,20 +67,13 @@ body.error-404 {
   align-items: center;
 }
 
-.navbar-brand > img {
-  display: inline-block;
-  margin-bottom: 2px;
-  margin-right: 5px;
-  width: 20px;
-  border-radius: 2px;
-}
-
 .nav > li > a > img {
   width: 32px;
   border-radius: 32px;
 }
 
 ul.nav.navbar-nav {
+  display: flex;
   align-items: center;
 }
 
@@ -73,7 +87,7 @@ nav form.navbar-form {
   position: relative;
 }
 
-#search.form-control-lg {
+#plant-search {
   border-radius: 20px;
   margin-bottom: 0;
   width: 75%;
@@ -89,13 +103,6 @@ nav form.navbar-form {
   bottom: 4px;
   z-index: 1;
   padding: 0;
-}
-
-.search-btn {
-  position: absolute;
-  right: 10px;
-  top: 50%;
-  transform: translateY(-50%);
 }
 
 .bi-search {
@@ -336,7 +343,7 @@ nav + .container {
 
 .user-card form .btn {
   min-width: 89px;
-  padding: 4px 12px;
+  /* padding: 4px 12px; */
   font-size: 12px;
 }
 

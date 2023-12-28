@@ -441,6 +441,10 @@ def handle_json_form_data():
         # for example, if we use API key and search for 'monstera':
         # https://perenual.com/api/species-list?key=sk-wfpE6589044314e5d3581&q=monstera
 
+
+        # TODO: left here for the night; work on implementing search feature
+        # tomorrow!! Exciting.
+
         plant_data = resp.json()
         print('This is plant_data', plant_data)
 
