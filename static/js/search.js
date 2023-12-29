@@ -1,6 +1,8 @@
 "use strict";
 
 const BASE_URL = '/api/get-plant-list';
+const DEFAULT_IMG_URL = '/static/images/sadplant.png';
+const DEFAULT_UPGRADE_TEXT = 'upgrade API plan';
 
 const $resultsArea = $("#resultsArea");
 const $searchForm = $("#search-form");
@@ -12,11 +14,12 @@ const $searchForm = $("#search-form");
  * - else: show results
  */
 
-async function processSearchForm(evt) {
+async function processSearchForm() {
+  console.log('We got into processSearchForm!');
   console.debug('processSearchForm ran!');
-  evt.preventDefault();
 
   const term = $("#plant-search").val();
+  console.log('This is term', term);
 
   const formData = await fetch(BASE_URL, {
     method: "POST",
@@ -31,14 +34,42 @@ async function processSearchForm(evt) {
 
   const plants = [];
   for (const plant of plantData.data) {
-    const {
+    let {
       common_name,
       scientific_name,
       cycle,
       watering,
       sunlight,
-      medium_url,
+      default_image,
     } = plant;
+
+    if (default_image.medium_url ===
+      "https://perenual.com/storage/image/upgrade_access.jpg") {
+        default_image = DEFAULT_IMG_URL;
+    } else {
+      default_image = default_image.medium_url;
+    }
+
+    if (cycle ===
+      ("Upgrade Plans To Premium/Supreme - " +
+      "https://perenual.com/subscription-api-pricing. I'm sorry")
+      ) {
+        cycle = DEFAULT_UPGRADE_TEXT;
+      }
+
+    if (watering ===
+      ("Upgrade Plans To Premium/Supreme - " +
+      "https://perenual.com/subscription-api-pricing. I'm sorry")
+      ) {
+        watering = DEFAULT_UPGRADE_TEXT;
+      }
+
+    if (sunlight ===
+      ("Upgrade Plans To Premium/Supreme - " +
+      "https://perenual.com/subscription-api-pricing. I'm sorry")
+      ) {
+        sunlight = DEFAULT_UPGRADE_TEXT;
+      }
 
     plants.push(
       {
@@ -47,7 +78,7 @@ async function processSearchForm(evt) {
         cycle,
         watering,
         sunlight,
-        medium_url,
+        default_image,
       }
     );
   }
@@ -71,8 +102,9 @@ async function processSearchForm(evt) {
   }
 }
 
-$searchForm.on("submit", processSearchForm);
+// $searchForm.on("submit", processSearchForm);
 // FIXME: form not submitting correctly
+// ^ now in conductor function, no longer necessary here
 
 /** showError: shows error message in DOM. */
 
@@ -110,10 +142,36 @@ function showResults(plants) {
 /** generateResultsMarkup: generates markup for plant data. */
 
 function generateResultsMarkup(plant) {
+
   return `
-  <p>Your lucky number is ${plant.common_name} (${plant.common_name}).</p>
-  <p>Your birth year (${plant.common_name}) fact is ${plant.common_name}.</p>
+    <div class="card h-150 text-bg-secondary gx-0" style="max-width: 19rem">
+      <img
+        src="${plant.default_image}"
+        class="card-img-top"
+        style="height: 16rem"
+        alt="${plant.default_image} Image"
+      >
+        <div class="card-body">
+          <h5 class="card-title">${plant.common_name}</h5>
+          <p class="card-text">Scientific Name: ${plant.scientific_name}</p>
+          <p class="card-text">Cycle: ${plant.cycle}</p>
+          <p class="card-text">Watering: ${plant.watering}</p>
+          <p class="card-text">Sunlight: ${plant.sunlight}</p>
+        </div>
+      </div>
   `;
+
+
+
+
+
+
+  // return `
+  // <p>Img is ${plant.default_image}</p>
+  // <img src="${plant.default_image}" >
+  // <p>Your lucky number is ${plant.common_name} (${plant.common_name}).</p>
+  // <p>Your birth year (${plant.common_name}) fact is ${plant.common_name}.</p>
+  // `;
 }
 
 
@@ -124,4 +182,4 @@ async function processFormDataDisplayResults(evt) {
 
 }
 
-// $searchForm.on("submit", processFormDataDisplayResults);
+$searchForm.on("submit", processFormDataDisplayResults);

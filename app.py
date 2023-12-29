@@ -12,6 +12,8 @@ from flask import (
 
 import requests
 
+
+
 from flask_debugtoolbar import DebugToolbarExtension
 from models import connect_db, db, User
 from forms import (
@@ -29,6 +31,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
 app.config['SECRET_KEY'] = os.environ.get('FLASK_SECERT_KEY', 'sssshhhh')
 app.config['SQLALCHEMY_ECHO'] = True
 app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = True
+app.config['WTF_CSRF_ENABLED'] = False
 
 toolbar = DebugToolbarExtension(app)
 
@@ -94,7 +97,9 @@ def do_logout():
 def homepage():
     """Show homepage."""
 
-    return render_template('homepage.html')
+    form = PlantSearchForm()
+
+    return render_template('homepage.html', form=form)
 
 
 #######################################
@@ -411,6 +416,7 @@ def handle_user_unliking():
 # plants routes
 
 
+print('Before entering handle_json_form_data')
 @app.post('/api/get-plant-list')
 def handle_json_form_data():
     """Takes in a JSON body with the following:
@@ -420,12 +426,21 @@ def handle_json_form_data():
     Interprets JSON data, sends requests to Perenual API, and returns JSON resp.
     """
 
-    data = request.json
+    print('We got into handle_json_form_data!')
 
+    data = request.json
+    print('This is data', data)
+
+    print('We got passed form validation! Now checking JSON.')
     form = PlantSearchForm(obj=data)
 
+    print('This is form', form)
+
     if form.validate_on_submit():
+        print('We got passed form validation for PlantSearchForm!')
         term = form.term.data
+
+        print('This is term', term)
 
         resp = requests.get(
             f'https://perenual.com/api/species-list',

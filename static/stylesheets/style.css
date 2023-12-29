@@ -321,6 +321,20 @@ nav + .container {
 
 /* ==================== User cards on follower/following pages */
 
+div.card {
+  display: inline-block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* .card {
+  width: 19rem;
+  height: 25rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+} */
+
+
 .user-card {
   width: 100%;
   padding-bottom: 100%;

@@ -9,7 +9,7 @@ class PlantSearchForm(FlaskForm):
     """Form for searching for a plant."""
 
     term = StringField(
-        "Search Term",
+        "Search Plants",
         validators=[InputRequired(), Length(max=30)],
     )
 
