@@ -15,9 +15,9 @@ import requests
 
 
 from flask_debugtoolbar import DebugToolbarExtension
-from models import connect_db, db, User
+from models import connect_db, db, User, Like
 from forms import (
-    CSRFProtection, PlantSearchForm
+    CSRFProtection, PlantSearchForm, SignupForm, LoginForm
 )
 
 from sqlalchemy.exc import IntegrityError
@@ -123,7 +123,7 @@ def signup():
             username=form.username.data,
             first_name=form.first_name.data,
             last_name=form.last_name.data,
-            description=form.description.data,
+            bio=form.bio.data,
             email=form.email.data,
             password=form.password.data,
             image_url=form.image_url.data or User.image_url.default.arg,
@@ -137,7 +137,7 @@ def signup():
 
         do_login(new_user)
         flash('You are signed up and logged in.')
-        return redirect(url_for('cafe_list'))
+        return redirect(url_for('homepage'))
 
     else:
         return render_template('/auth/signup-form.html', form=form)
@@ -162,7 +162,7 @@ def login():
         if user:
             do_login(user)
             flash(f'Hello, {user.username}!')
-            return redirect(url_for('cafe_list'))
+            return redirect(url_for('homepage'))
 
         flash('Invalid credentials.', 'danger')
 
@@ -179,7 +179,7 @@ def logout():
 
     do_logout()
 
-    flash('You should have successfully logged out.')
+    flash('You have successfully logged out.')
     return redirect(url_for('homepage'))
 
 
@@ -352,9 +352,9 @@ def edit_cafe(cafe_id):
 
 
 @app.get('/api/likes')
-def check_user_likes_cafe():
-    """Given cafe_id in the URL query string, checks if the current user likes
-    specific cafe. Returns JSON:
+def likes_plant():
+    """Given plant_id in the URL query string, checks if the current user likes
+    specific plant. Returns JSON:
 
     {"likes": true|false}
 
@@ -363,11 +363,16 @@ def check_user_likes_cafe():
     if not g.user:
         return jsonify({"error": "Not logged in"})
 
-    cafe_id = int(request.args.get('cafe_id'))
-    cafe = Cafe.query.get_or_404(cafe_id)
+    # ^ actually, bookmark icon empty should still exist even if user is not
+    # logged in. When a non-user clicks on empty bookmark, it should redirect
+    # them to login to use that feature. Once logged in, bring them back to
+    # original location.
+
+    plant_id = int(request.args.get('plant_id'))
+    plant = Plant.query.get_or_404(plant_id)
 
     like = Like.query.filter(
-        (Like.user_id==g.user.id) & (Like.cafe_id==cafe.id)
+        (Like.user_id==g.user.id) & (Like.plant_id==plant.id)
         ).one_or_none()
 
     if like:
@@ -378,21 +383,28 @@ def check_user_likes_cafe():
     return jsonify({"likes": like})
 
 
+# TODO: currently here
+
+
 @app.post('/api/like')
 def handle_user_like():
-    """Handles user liking a cafe."""
+    """Handles user liking plant."""
 
     if not g.user:
         return jsonify({"error": "Not logged in"})
 
-    cafe_id = int(request.json['cafe_id'])
-    cafe = Cafe.query.get_or_404(cafe_id)
 
-    g.user.liked_cafes.append(cafe)
+# TODO: maybe add plant to DB here? If already in db, raise IntegrityError and
+# don't have to add it to DB.
+
+    plant_id = int(request.json['plant_id'])
+    plant = Plant.query.get_or_404(plant_id)
+
+    g.user.liked_plants.append(plant)
 
     db.session.commit()
 
-    return jsonify({"liked": cafe_id})
+    return jsonify({"liked": plant_id})
 
 
 @app.post('/api/unlike')
@@ -402,14 +414,14 @@ def handle_user_unliking():
     if not g.user:
         return jsonify({"error": "Not logged in"})
 
-    cafe_id = int(request.json['cafe_id'])
-    cafe = Cafe.query.get_or_404(cafe_id)
+    plant_id = int(request.json['plant_id'])
+    plant = Plant.query.get_or_404(plant_id)
 
-    g.user.liked_cafes.remove(cafe)
+    g.user.liked_cafes.remove(plant)
 
     db.session.commit()
 
-    return jsonify({"unliked": cafe_id})
+    return jsonify({"unliked": plant_id})
 
 
 #######################################
@@ -446,7 +458,8 @@ def handle_json_form_data():
             f'https://perenual.com/api/species-list',
             params={
                 "key": API_KEY,
-                "q": term
+                "q": term,
+                "order": "asc",
             }
         )
         # note to self: might need API route to be '-list?'

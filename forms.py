@@ -65,8 +65,8 @@ class SignupForm(FlaskForm):
         validators=[InputRequired(), Length(max=30)]
     )
 
-    description = TextAreaField(
-        "Description",
+    bio = TextAreaField(
+        "Bio",
         validators=[Optional()]
     )
 

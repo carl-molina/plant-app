@@ -65,6 +65,7 @@ span.navbar-toggler-icon {
 .navbar-brand {
   display: flex;
   align-items: center;
+  padding-right: 2rem;
 }
 
 .nav > li > a > img {

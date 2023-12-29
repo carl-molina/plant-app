@@ -35,6 +35,7 @@ async function processSearchForm() {
   const plants = [];
   for (const plant of plantData.data) {
     let {
+      id,
       common_name,
       scientific_name,
       cycle,
@@ -43,9 +44,12 @@ async function processSearchForm() {
       default_image,
     } = plant;
 
-    if (default_image.medium_url ===
+    if (default_image === null ||
+      default_image.medium_url ===
       "https://perenual.com/storage/image/upgrade_access.jpg") {
         default_image = DEFAULT_IMG_URL;
+    } else if (default_image.medium_url === undefined) {
+      default_image = default_image.original_url;
     } else {
       default_image = default_image.medium_url;
     }
@@ -73,6 +77,7 @@ async function processSearchForm() {
 
     plants.push(
       {
+        id,
         common_name,
         scientific_name,
         cycle,
@@ -149,10 +154,24 @@ function generateResultsMarkup(plant) {
       >
         <div class="card-body">
           <h5 class="card-title">${plant.common_name}</h5>
+          <form class="ml-3 d-inline">
+          <input type="hidden" id="plant-id" name="plant-id" value="${plant.id}">
+          <button id="unlike" style="display: none"
+            class="btn-sm btn btn-outline-primary" formaction="/unlike">
+            Liked
+            <i class="bi bi-bookmark-fill"></i>
+          </button>
+          <button id="like" style="display: none"
+            class="btn-sm btn btn-outline-secondary" formaction="/like">
+            Unliked
+            <i class="bi bi-bookmark"></i>
+          </button>
+        </form>
           <p class="card-text">Scientific Name: ${plant.scientific_name}</p>
           <p class="card-text">Cycle: ${plant.cycle}</p>
           <p class="card-text">Watering: ${plant.watering}</p>
           <p class="card-text">Sunlight: ${plant.sunlight}</p>
+          <a href="/plants/${plant.id}" class="card-text"><i>More Details</i></a>
         </div>
       </div>
   `;
@@ -161,6 +180,7 @@ function generateResultsMarkup(plant) {
 
 async function processFormDataDisplayResults(evt) {
   evt.preventDefault();
+  $resultsArea.empty();
   const plants = await processSearchForm();
   showResults(plants);
 

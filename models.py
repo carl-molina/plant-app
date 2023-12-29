@@ -132,7 +132,7 @@ class User(db.Model):
         nullable=False,
     )
 
-    description = db.Column(
+    bio = db.Column(
         db.Text,
         nullable=False,
         default="",
@@ -165,7 +165,7 @@ class User(db.Model):
         email,
         password,
         admin=False,
-        description='',
+        bio='',
         image_url=DEFAULT_PROFILE_IMG):
         """Register a new user and handle password hashing."""
 
@@ -175,7 +175,7 @@ class User(db.Model):
             username=username,
             first_name=first_name,
             last_name=last_name,
-            description=description,
+            bio=bio,
             email=email,
             hashed_password=hashed_pwd,
             admin=admin,
