@@ -477,14 +477,33 @@ def handle_json_form_data():
         print('This is plant_data', plant_data)
 
         for plant in plant_data.data:
+
+            if "Upgrade Plans to Premium" in plant.cycle:
+                plant.cycle = Plant.cycle.default.arg
+
+            if "Upgrade Plans to Premium" in plant.watering:
+                plant.watering = Plant.watering.default.arg
+
+            if "Upgrade Plans to Premium" in plant.sunlight:
+                plant.sunlight = Plant.sunlight.default.arg
+
+            if (plant.default_image == None or
+                plant.default_image.medium_url == "https://perenual.com/storage/image/upgrade_access.jpg"):
+                plant.default_image = Plant.default_image.default.arg
+            elif plant.default_image.medium_url == None:
+                plant.default_image = plant.default_image.original_url
+            else:
+                plant.default_image = plant.default_image.medium_url
+
+
             new_plant = Plant(
                 id = plant.id,
                 common_name = plant.common_name,
                 scientific_name = plant.scientific_name,
-                cycle = plant.cycle or Plant.cycle.default.arg,
-                watering = plant.watering or Plant.watering.default.arg,
-                sunlight = plant.sunlight or Plant.sunlight.default.arg,
-                default_image = plant.default_image or Plant.default_image.default.arg,
+                cycle = plant.cycle,
+                watering = plant.watering,
+                sunlight = plant.sunlight,
+                default_image = plant.default_image,
             )
 
             db.session.add(new_plant)
