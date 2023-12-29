@@ -15,7 +15,7 @@ import requests
 
 
 from flask_debugtoolbar import DebugToolbarExtension
-from models import connect_db, db, User, Like
+from models import connect_db, db, User, Like, Plant
 from forms import (
     CSRFProtection, PlantSearchForm, SignupForm, LoginForm
 )
@@ -475,6 +475,28 @@ def handle_json_form_data():
 
         plant_data = resp.json()
         print('This is plant_data', plant_data)
+
+        for plant in plant_data.data:
+            new_plant = Plant(
+                id = plant.id,
+                common_name = plant.common_name,
+                scientific_name = plant.scientific_name,
+                cycle = plant.cycle or Plant.cycle.default.arg,
+                watering = plant.watering or Plant.watering.default.arg,
+                sunlight = plant.sunlight or Plant.sunlight.default.arg,
+                default_image = plant.default_image or Plant.default_image.default.arg,
+            )
+
+            db.session.add(new_plant)
+
+            try:
+                db.session.commit()
+
+            except IntegrityError:
+                flash(f'Could not add plant id {new_plant.id} to db. ' +
+                      f'Possibly already added {new_plant.common_name}.')
+
+            flash(f'{new_plant.common_name} added w/ id {new_plant.id}')
 
         print('This is plant_data jsonify', jsonify(plant_data))
         return jsonify(plant_data)

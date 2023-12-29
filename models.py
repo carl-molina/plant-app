@@ -8,6 +8,52 @@ db = SQLAlchemy()
 
 DEFAULT_PROFILE_IMG = '/static/images/default-pic.png'
 DEFAULT_CAFE_IMG = '/static/images/default-cafe.jpg'
+DEFAULT_IMG_URL = '/static/images/sadplant.png'
+DEFAULT_UPGRADE_TEXT = 'upgrade API plan'
+
+class Plant(db.Model):
+    """Plant information."""
+
+    __tablename__ = 'plants'
+
+    id = db.Column(
+        db.Integer,
+        primary_key=True,
+    )
+
+    common_name = db.Column(
+        db.Text,
+        nullable=False,
+    )
+
+    scientific_name = db.Column(
+        db.Text,
+        nullable=False,
+    )
+
+    cycle = db.Column(
+        db.Text,
+        nullable=False,
+        default=DEFAULT_UPGRADE_TEXT,
+    )
+
+    watering = db.Column(
+        db.Text,
+        nullable=False,
+        default=DEFAULT_UPGRADE_TEXT,
+    )
+
+    sunlight = db.Column(
+        db.Text,
+        nullable=False,
+        default=DEFAULT_UPGRADE_TEXT,
+    )
+
+    default_image = db.Column(
+        db.Text,
+        nullable=False,
+        default=DEFAULT_IMG_URL,
+    )
 
 
 class City(db.Model):
