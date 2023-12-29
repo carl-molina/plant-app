@@ -248,8 +248,8 @@ class User(db.Model):
 
         return False
 
-    liked_cafes = db.relationship(
-        "Cafe", secondary="likes", backref="liking_users"
+    liked_plants = db.relationship(
+        "Plant", secondary="likes", backref="liking_users"
     )
 
     def __repr__(self):
@@ -262,7 +262,7 @@ class Like(db.Model):
     __tablename__ = "likes"
 
     __table_args__ = (
-        db.UniqueConstraint("user_id", "cafe_id"),
+        db.UniqueConstraint("user_id", "plant_id"),
     )
 
     user_id = db.Column(
@@ -271,16 +271,16 @@ class Like(db.Model):
         primary_key=True,
     )
 
-    cafe_id = db.Column(
+    plant_id = db.Column(
         db.Integer,
-        db.ForeignKey('cafes.id'),
+        db.ForeignKey('plants.id'),
         primary_key=True,
     )
 
     def __repr__(self):
         return (
             f"<{self.__class__.__name__} " +
-            f"user={self.user_id} cafe={self.cafe_id}>"
+            f"user={self.user_id} plant={self.plant_id}>"
         )
 
 

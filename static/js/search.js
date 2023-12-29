@@ -7,6 +7,8 @@ const DEFAULT_UPGRADE_TEXT = 'upgrade API plan';
 const $resultsArea = $("#resultsArea");
 const $searchForm = $("#search-form");
 
+let plantId = '';
+
 /** processSearchForm: handle submission of form:
  *
  * - make API call to server to get list of plants matching search term
@@ -143,7 +145,7 @@ function showResults(plants) {
 /** generateResultsMarkup: generates markup for plant data. */
 
 function generateResultsMarkup(plant) {
-
+  console.log('This is plant.id', plant.id);
   return `
     <div class="card h-150 text-bg-secondary gx-0" style="max-width: 19rem">
       <img
@@ -156,11 +158,11 @@ function generateResultsMarkup(plant) {
           <h5 class="card-title">${plant.common_name}</h5>
           <form class="ml-3 d-inline">
           <input type="hidden" id="plant-id" name="plant-id" value="${plant.id}">
-          <button id="unlike" style="display: none"
+          <button id="unlike-${plant.id}" style="display: none"
             class="btn-sm btn btn-outline-primary" formaction="/unlike">
             <i class="bi bi-bookmark-fill"></i>
           </button>
-          <button id="like" style="display: none"
+          <button id="like-${plant.id}" style="display: none"
             class="btn-sm btn btn-outline-primary" formaction="/like">
             <i class="bi bi-bookmark"></i>
           </button>
@@ -172,6 +174,12 @@ function generateResultsMarkup(plant) {
           <a href="/plants/${plant.id}" class="card-text"><i>More Details</i></a>
         </div>
       </div>
+
+      <script>
+        plantId = ${plant.id};
+        console.log('This is plantId from search.js', plantId);
+        checkLikes(${plant.id});
+      </script>
   `;
 }
 

@@ -368,7 +368,11 @@ def likes_plant():
     # them to login to use that feature. Once logged in, bring them back to
     # original location.
 
+    print('We got into likes_plant on backend/server-side!')
+
     plant_id = int(request.args.get('plant_id'))
+    print('This is plant_id', plant_id)
+
     plant = Plant.query.get_or_404(plant_id)
 
     like = Like.query.filter(
@@ -509,6 +513,14 @@ def handle_json_form_data():
             #     print('This is plant.default_image else', plant.default_image)
 
 
+            print('This is plant', plant)
+
+            default_img = None
+            if plant.get('default_image', None) == None:
+                default_img = Plant.default_image.default.arg
+
+            elif 'medium_url' not in plant.get('default_image') and 'original_url' in plant.get('default_image'):
+                default_img = plant['default_image']['original_url']
 
             new_plant = Plant(
                 id = plant.get('id'),
@@ -517,19 +529,22 @@ def handle_json_form_data():
                 cycle = plant.get('cycle'),
                 watering = plant.get('watering'),
                 sunlight = plant.get('sunlight'),
-                default_image = plant['default_image']['medium_url'],
+                default_image = (default_img or
+                                 plant['default_image']['medium_url'])
             )
 
             db.session.add(new_plant)
 
             try:
                 db.session.commit()
+                flash(f'{new_plant.common_name} added w/ id {new_plant.id}')
 
             except IntegrityError:
                 flash(f'Could not add plant id {new_plant.id} to db. ' +
                       f'Possibly already added {new_plant.common_name}.')
+                db.session.rollback()
 
-            flash(f'{new_plant.common_name} added w/ id {new_plant.id}')
+            # flash(f'{new_plant.common_name} added w/ id {new_plant.id}')
 
         print('This is plant_data jsonify', jsonify(plant_data))
         return jsonify(plant_data)

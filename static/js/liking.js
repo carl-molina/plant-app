@@ -31,7 +31,8 @@ async function unlike(evt) {
 }
 
 
-$(async function checkLikes() {
+async function checkLikes(plantId) {
+  console.debug('We got into checkLikes!', plantId);
   $("#unlike").on("click", unlike);
   $("#like").on("click", like);
 
@@ -39,13 +40,13 @@ $(async function checkLikes() {
 
   const response = await axios.get("/api/likes", {params: { plant_id: plantId }});
   const result = response.data;
-  console.log(response.data);
+  console.log('This is response.data', response.data);
 
   if ("error" in result) {
     console.log(result.error);
   } else {
     const likes = result.likes;
-    if (likes) $("#unlike").show();
-    else $("#like").show();
+    if (likes) $(`#unlike-${plantId}`).show();
+    else $(`#like-${plantId}`).show();
   }
-});
+}
