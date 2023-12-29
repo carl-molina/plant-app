@@ -158,12 +158,10 @@ function generateResultsMarkup(plant) {
           <input type="hidden" id="plant-id" name="plant-id" value="${plant.id}">
           <button id="unlike" style="display: none"
             class="btn-sm btn btn-outline-primary" formaction="/unlike">
-            Liked
             <i class="bi bi-bookmark-fill"></i>
           </button>
           <button id="like" style="display: none"
-            class="btn-sm btn btn-outline-secondary" formaction="/like">
-            Unliked
+            class="btn-sm btn btn-outline-primary" formaction="/like">
             <i class="bi bi-bookmark"></i>
           </button>
         </form>

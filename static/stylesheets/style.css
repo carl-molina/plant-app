@@ -28,6 +28,10 @@ h3 {
   color: #132A13
 }
 
+h5 {
+  display: inline-block;
+}
+
 /* ======================= Nav */
 
 .navbar {
