@@ -476,34 +476,48 @@ def handle_json_form_data():
         plant_data = resp.json()
         print('This is plant_data', plant_data)
 
-        for plant in plant_data.data:
+        for plant in plant_data.get("data"):
 
-            if "Upgrade Plans to Premium" in plant.cycle:
-                plant.cycle = Plant.cycle.default.arg
+            # if ("Upgrade Plans to Premium/Supreme - " +
+            #     "https://perenual.com/subscription-api-pricing. I'm sorry") == plant.get('cycle'):
+            #     plant.cycle = Plant.cycle.default.arg
+            #     print('This is plant.cycle', plant.cycle)
 
-            if "Upgrade Plans to Premium" in plant.watering:
-                plant.watering = Plant.watering.default.arg
+            # if ("Upgrade Plans to Premium/Supreme - " +
+            #     "https://perenual.com/subscription-api-pricing. I'm sorry") == plant.get('watering'):
+            #     plant.watering = Plant.watering.default.arg
+            #     print('This is plant.watering', plant.watering)
 
-            if "Upgrade Plans to Premium" in plant.sunlight:
-                plant.sunlight = Plant.sunlight.default.arg
 
-            if (plant.default_image == None or
-                plant.default_image.medium_url == "https://perenual.com/storage/image/upgrade_access.jpg"):
-                plant.default_image = Plant.default_image.default.arg
-            elif plant.default_image.medium_url == None:
-                plant.default_image = plant.default_image.original_url
-            else:
-                plant.default_image = plant.default_image.medium_url
+            # if ("Upgrade Plans to Premium/Supreme - " +
+            #     "https://perenual.com/subscription-api-pricing. I'm sorry") == plant.get('sunlight'):
+            #     plant.sunlight = Plant.sunlight.default.arg
+            #     print('This is plant.sunlight', plant.sunlight)
+
+
+            # if (plant.get('default_image') == None or
+            #     plant.get('default_image.medium_url') == "https://perenual.com/storage/image/upgrade_access.jpg"):
+            #     plant.default_image = Plant.default_image.default.arg
+            #     print('This is plant.default_image first if statement', plant.default_image)
+
+            # elif plant.get('default_image.medium_url') == None:
+            #     plant.default_image = plant.get("default_image['original_url']")
+            #     print('This is plant.default_image elif', plant.default_image)
+
+            # else:
+            #     plant.default_image = plant.get("default_image['medium_url']")
+            #     print('This is plant.default_image else', plant.default_image)
+
 
 
             new_plant = Plant(
-                id = plant.id,
-                common_name = plant.common_name,
-                scientific_name = plant.scientific_name,
-                cycle = plant.cycle,
-                watering = plant.watering,
-                sunlight = plant.sunlight,
-                default_image = plant.default_image,
+                id = plant.get('id'),
+                common_name = plant.get('common_name'),
+                scientific_name = plant.get('scientific_name'),
+                cycle = plant.get('cycle'),
+                watering = plant.get('watering'),
+                sunlight = plant.get('sunlight'),
+                default_image = plant['default_image']['medium_url'],
             )
 
             db.session.add(new_plant)
