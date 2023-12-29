@@ -102,10 +102,6 @@ async function processSearchForm() {
   }
 }
 
-// $searchForm.on("submit", processSearchForm);
-// FIXME: form not submitting correctly
-// ^ now in conductor function, no longer necessary here
-
 /** showError: shows error message in DOM. */
 
 function showError(error) {
@@ -160,18 +156,6 @@ function generateResultsMarkup(plant) {
         </div>
       </div>
   `;
-
-
-
-
-
-
-  // return `
-  // <p>Img is ${plant.default_image}</p>
-  // <img src="${plant.default_image}" >
-  // <p>Your lucky number is ${plant.common_name} (${plant.common_name}).</p>
-  // <p>Your birth year (${plant.common_name}) fact is ${plant.common_name}.</p>
-  // `;
 }
 
 
@@ -183,3 +167,8 @@ async function processFormDataDisplayResults(evt) {
 }
 
 $searchForm.on("submit", processFormDataDisplayResults);
+
+
+
+// TODO: implement bookmark icon on plants to bookmark plants after search for a
+// logged in user! You're almost there!!
