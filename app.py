@@ -387,19 +387,12 @@ def likes_plant():
     return jsonify({"likes": like})
 
 
-# TODO: currently here
-
-
 @app.post('/api/like')
 def handle_user_like():
     """Handles user liking plant."""
 
     if not g.user:
         return jsonify({"error": "Not logged in"})
-
-
-# TODO: maybe add plant to DB here? If already in db, raise IntegrityError and
-# don't have to add it to DB.
 
     plant_id = int(request.json['plant_id'])
     plant = Plant.query.get_or_404(plant_id)

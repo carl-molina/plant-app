@@ -156,14 +156,14 @@ function generateResultsMarkup(plant) {
       >
         <div class="card-body">
           <h5 class="card-title">${plant.common_name}</h5>
-          <form class="ml-3 d-inline">
+          <form class="ml-0 d-inline">
           <input type="hidden" id="plant-id" name="plant-id" value="${plant.id}">
           <button id="unlike-${plant.id}" style="display: none"
-            class="btn-sm btn btn-outline-primary" formaction="/unlike">
+            class="btn-sm btn btn-link">
             <i class="bi bi-bookmark-fill"></i>
           </button>
           <button id="like-${plant.id}" style="display: none"
-            class="btn-sm btn btn-outline-primary" formaction="/like">
+            class="btn-sm btn btn-link">
             <i class="bi bi-bookmark"></i>
           </button>
         </form>
@@ -193,8 +193,3 @@ async function processFormDataDisplayResults(evt) {
 }
 
 $searchForm.on("submit", processFormDataDisplayResults);
-
-
-
-// TODO: implement bookmark icon on plants to bookmark plants after search for a
-// logged in user! You're almost there!!

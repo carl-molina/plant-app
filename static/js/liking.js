@@ -1,7 +1,11 @@
 async function like(evt) {
   evt.preventDefault();
 
-  const plantId = $("#plant-id").val();
+  const plantId = $("button").closest("#plant-id").val();
+
+// TODO: find a way to get the plant ID value here
+
+  console.log('This is plantId', plantId);
 
   const response = await axios.post("/api/like", { plant_id: plantId });
   const result = response.data;
@@ -17,7 +21,8 @@ async function like(evt) {
 async function unlike(evt) {
   evt.preventDefault();
 
-  const plantId = $("#plant-id").val();
+  const plantId = $("button").closest("#plant-id").val();
+  console.log('This is plantId', plantId);
 
   const response = await axios.post("/api/unlike", { plant_id: plantId });
   const result = response.data;
@@ -33,10 +38,8 @@ async function unlike(evt) {
 
 async function checkLikes(plantId) {
   console.debug('We got into checkLikes!', plantId);
-  $("#unlike").on("click", unlike);
-  $("#like").on("click", like);
-
-//  TODO: something here?
+  $(`#unlike-${plantId}`).on("click", unlike);
+  $(`#like-${plantId}`).on("click", like);
 
   const response = await axios.get("/api/likes", {params: { plant_id: plantId }});
   const result = response.data;
