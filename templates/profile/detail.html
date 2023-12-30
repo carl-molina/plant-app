@@ -1,0 +1,49 @@
+
+{% extends 'base.html' %}
+
+{% block title %} {{ user.full_name }} {% endblock %}
+
+{% block content %}
+
+<div class="row justify-content-center">
+
+  <div class="col-4 col-sm-4 col-md-4 col-lg-3">
+    <img class="img-fluid mb-5" src="{{ user.image_url }}">
+  </div>
+
+  <div class="col-12 col-sm-10 col-md-8">
+    <h1>{{ user.get_full_name() }}</h1>
+    <p class="lead">{{ user.bio }}</p>
+
+    <p><b>Username:</b> {{ user.username }}</p>
+    <p><b>Email:</b> {{ user.email }}</p>
+
+    <p>
+      <a class="btn btn-outline-primary" href="/profile/edit">
+        Edit Your Profile
+      </a>
+    </p>
+
+    {% with liked_plants = user.liked_plants %}
+    {% if liked_plants %}
+    <h2 class="mt-5">Your Liked Plants</h2>
+
+
+    <ul class="list-group">
+      {% for plant in user.liked_plants %}
+      <li class="list-group-item">
+        <a href="/cafes/{{ cafe.id }}">{{ plant.common_name }}</a>
+        <small class="ml-2 text-muted">{{ plant.scientific_name }}</small>
+      </li>
+      {% endfor %}
+    </ul>
+    {% else %}
+    <p class="mt-5 text-muted">You have no liked plants.</p>
+    {% endif %}
+    {% endwith %}
+
+  </div>
+
+</div>
+
+{% endblock %}
