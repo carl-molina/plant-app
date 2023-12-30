@@ -414,7 +414,7 @@ def handle_user_unliking():
     plant_id = int(request.json['plant_id'])
     plant = Plant.query.get_or_404(plant_id)
 
-    g.user.liked_cafes.remove(plant)
+    g.user.liked_plants.remove(plant)
 
     db.session.commit()
 

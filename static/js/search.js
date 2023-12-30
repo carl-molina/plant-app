@@ -157,7 +157,7 @@ function generateResultsMarkup(plant) {
         <div class="card-body">
           <h5 class="card-title">${plant.common_name}</h5>
           <form class="ml-0 d-inline">
-          <input type="hidden" id="plant-id" name="plant-id" value="${plant.id}">
+          <input type="hidden" class="plant-id" name="plant-id" value="${plant.id}">
           <button id="unlike-${plant.id}" style="display: none"
             class="btn-sm btn btn-link">
             <i class="bi bi-bookmark-fill"></i>

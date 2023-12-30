@@ -1,7 +1,7 @@
 async function like(evt) {
   evt.preventDefault();
 
-  const plantId = $("button").closest("#plant-id").val();
+  const plantId = $(this).closest(".card-body").find(".plant-id").val();
 
 // TODO: find a way to get the plant ID value here
 
@@ -13,15 +13,15 @@ async function like(evt) {
   if ("error" in result) {
     console.log(result.error);
   } else {
-    $("#like").hide();
-    $("#unlike").show();
+    $(`#like-${plantId}`).hide();
+    $(`#unlike-${plantId}`).show();
   }
 }
 
 async function unlike(evt) {
   evt.preventDefault();
 
-  const plantId = $("button").closest("#plant-id").val();
+  const plantId = $(this).closest(".card-body").find(".plant-id").val();
   console.log('This is plantId', plantId);
 
   const response = await axios.post("/api/unlike", { plant_id: plantId });
@@ -30,8 +30,8 @@ async function unlike(evt) {
   if ("error" in result) {
     console.log(result.error);
   } else {
-    $("#unlike").hide();
-    $("#like").show();
+    $(`#unlike-${plantId}`).hide();
+    $(`#like-${plantId}`).show();
   }
 }
 
