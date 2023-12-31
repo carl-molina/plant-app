@@ -1,9 +1,11 @@
+/**
+ *  Liking/Unliking/Checking Likes on Homepage:
+ */
+
 async function like(evt) {
   evt.preventDefault();
 
   const plantId = $(this).closest(".card-body").find(".plant-id").val();
-
-// TODO: find a way to get the plant ID value here
 
   console.log('This is plantId', plantId);
 
@@ -55,9 +57,53 @@ async function checkLikes(plantId) {
 }
 
 
-$(async function plantDetailLikes(plantId) {
-  $("#unlike").on("click", unlike);
-  $("#like").on("click", like);
+/**
+ *  Liking/Unliking/Checking Likes on Plant Detail Page:
+ */
+
+async function like(evt) {
+  evt.preventDefault();
+
+  const plantId = $("#plant-id").val();
+
+  console.log('This is plantId', plantId);
+
+  const response = await axios.post("/api/like", { plant_id: plantId });
+  const result = response.data;
+
+  if ("error" in result) {
+    console.log(result.error);
+  } else {
+    $(`#like`).hide();
+    $(`#unlike`).show();
+  }
+}
+
+
+
+async function unlike(evt) {
+  evt.preventDefault();
+
+  const plantId = $("#plant-id").val();
+  console.log('This is plantId', plantId);
+
+  const response = await axios.post("/api/unlike", { plant_id: plantId });
+  const result = response.data;
+
+  if ("error" in result) {
+    console.log(result.error);
+  } else {
+    $(`#unlike`).hide();
+    $(`#like`).show();
+  }
+}
+
+
+$(async function plantDetailLikes() {
+  const plantId = $("#plant-id").val();
+
+  $(`#unlike`).on("click", unlike);
+  $(`#like`).on("click", like);
 
   console.log('This is plantId in liking.js', plantId);
 
@@ -69,7 +115,7 @@ $(async function plantDetailLikes(plantId) {
     console.log(result.error);
   } else {
     const likes = result.likes;
-    if (likes) $("#unlike").show();
-    else $("#like").show();
+    if (likes) $(`#unlike`).show();
+    else $(`#like`).show();
   }
 });
