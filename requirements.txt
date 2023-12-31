@@ -13,6 +13,7 @@ Flask-Bcrypt==1.0.1
 Flask-DebugToolbar @ git+https://github.com/pallets-eco/flask-debugtoolbar@b7f5a725cd7840d4f04b8483c2c1c93e8cff9cb2
 Flask-SQLAlchemy==3.1.1
 Flask-WTF==1.2.1
+gunicorn==21.2.0
 idna==3.6
 ipython==8.19.0
 itsdangerous==2.1.2
