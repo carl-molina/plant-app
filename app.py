@@ -232,19 +232,7 @@ def edit_profile():
 
 
 #######################################
-# cafes routes
-
-
-@app.get('/cafes')
-def cafe_list():
-    """Return list of all cafes."""
-
-    cafes = Cafe.query.order_by('name').all()
-
-    return render_template(
-        '/cafe/list.html',
-        cafes=cafes,
-    )
+# plant/plants routes
 
 
 @app.get('/plants/<int:plant_id>')
@@ -260,92 +248,38 @@ def plant_detail(plant_id):
     )
 
 
-@app.route('/cafes/add', methods=["GET", "POST"])
-# Quotations for each method was the ^ bug ^.
-def add_new_cafe():
-    """GET: show form for adding a cafe. Form accepts:
-            name: required
-            description: optional
-            url: optional, else must be valid URL
-            address: required
-            city_code: must be drop-down menu of cities in db
-            image_url: optional, else must be valid URL
+# @app.route('/plants/<int:plant_id>/edit', methods=["GET", "POST"])
+# def edit_plant(plant_id):
+#     """GET: show form for editing plant. Form fields same as adding new plant.
+#     POST: handles editing plant.
+#     """
 
-    POST: handles adding new cafe.
-    """
+#     if not g.user or not g.user.admin:
+#         flash("Only admins can add/edit plants.")
+#         return redirect(url_for("homepage"))
 
-    if not g.user or not g.user.admin:
-        flash("Only admins can add/edit cafes.")
-        return redirect(url_for("cafe_list"))
+#     plant = Plant.query.get_or_404(plant_id)
 
+#     form = AddEditPlantForm(obj=plant)
 
-    form = AddEditCafeForm()
-    form.city_code.choices = get_cities()
+#     if form.validate_on_submit():
+#         if not form.default_image.data:
+#             form.default_image.data = Plant.image_url.default.arg
 
-    if form.validate_on_submit():
-        # data = {k: v for k, v in form.data.items() if k != "csrf_token"}
-        # new_cafe = Cafe(**data)
-        # ^ old way, need to validate if image_url is empty string instead:
-        new_cafe = Cafe(
-            name=form.name.data,
-            description=form.description.data,
-            url=form.url.data,
-            address=form.address.data,
-            city_code=form.city_code.data,
-            image_url=form.image_url.data or Cafe.image_url.default.arg,
-        )
+#         form.populate_obj(plant)
 
-        db.session.add(new_cafe)
+#         try:
+#             db.session.commit()
 
-        try:
-            db.session.commit()
+#         except IntegrityError:
+#             flash("Could not save changes.")
+#             return render_template('/cafe/edit-form.html', form=form, plant=plant)
 
-        except IntegrityError:
-            flash("Could not add cafe to database.")
-            return render_template('/cafe/add-form.html', form=form)
+#         flash(f'{plant.common_name} edited.')
+#         return redirect(url_for('plant_detail', plant_id=plant_id))
 
-        flash(f'{new_cafe.name} added.')
-        new_cafe.save_map()
-        return redirect(url_for('cafe_detail', cafe_id=new_cafe.id))
-
-    else:
-        return render_template('/cafe/add-form.html', form=form)
-
-
-@app.route('/cafes/<int:cafe_id>/edit', methods=["GET", "POST"])
-def edit_cafe(cafe_id):
-    """GET: show form for editing cafe. Form fields same as adding new cafe.
-    POST: handles editing cafe.
-    """
-
-    if not g.user or not g.user.admin:
-        flash("Only admins can add/edit cafes.")
-        return redirect(url_for("cafe_list"))
-
-    cafe = Cafe.query.get_or_404(cafe_id)
-
-    form = AddEditCafeForm(obj=cafe)
-    form.city_code.choices = get_cities()
-
-    if form.validate_on_submit():
-        if not form.image_url.data:
-            form.image_url.data = Cafe.image_url.default.arg
-
-        form.populate_obj(cafe)
-
-        try:
-            db.session.commit()
-
-        except IntegrityError:
-            flash("Could not save changes.")
-            return render_template('/cafe/edit-form.html', form=form, cafe=cafe)
-
-        flash(f'{cafe.name} edited.')
-        cafe.save_map()
-        return redirect(url_for('cafe_detail', cafe_id=cafe_id))
-
-    else:
-        return render_template('/cafe/edit-form.html', form=form, cafe=cafe)
+#     else:
+#         return render_template('/plant/edit-form.html', form=form, plant=plant)
 
 
 #######################################
@@ -423,7 +357,8 @@ def handle_user_unliking():
 
 
 #######################################
-# plants routes
+# Perenual API routes
+# TODO: add plant detail route for Perenual API request
 
 
 print('Before entering handle_json_form_data')
@@ -460,52 +395,16 @@ def handle_json_form_data():
                 "order": "asc",
             }
         )
-        # note to self: might need API route to be '-list?'
 
 
         print('This is resp', resp)
         # for example, if we use API key and search for 'monstera':
         # https://perenual.com/api/species-list?key=sk-wfpE6589044314e5d3581&q=monstera
 
-
-        # TODO: left here for the night; work on implementing search feature
-        # tomorrow!! Exciting.
-
         plant_data = resp.json()
         print('This is plant_data', plant_data)
 
         for plant in plant_data.get("data"):
-
-            # if ("Upgrade Plans to Premium/Supreme - " +
-            #     "https://perenual.com/subscription-api-pricing. I'm sorry") == plant.get('cycle'):
-            #     plant.cycle = Plant.cycle.default.arg
-            #     print('This is plant.cycle', plant.cycle)
-
-            # if ("Upgrade Plans to Premium/Supreme - " +
-            #     "https://perenual.com/subscription-api-pricing. I'm sorry") == plant.get('watering'):
-            #     plant.watering = Plant.watering.default.arg
-            #     print('This is plant.watering', plant.watering)
-
-
-            # if ("Upgrade Plans to Premium/Supreme - " +
-            #     "https://perenual.com/subscription-api-pricing. I'm sorry") == plant.get('sunlight'):
-            #     plant.sunlight = Plant.sunlight.default.arg
-            #     print('This is plant.sunlight', plant.sunlight)
-
-
-            # if (plant.get('default_image') == None or
-            #     plant.get('default_image.medium_url') == "https://perenual.com/storage/image/upgrade_access.jpg"):
-            #     plant.default_image = Plant.default_image.default.arg
-            #     print('This is plant.default_image first if statement', plant.default_image)
-
-            # elif plant.get('default_image.medium_url') == None:
-            #     plant.default_image = plant.get("default_image['original_url']")
-            #     print('This is plant.default_image elif', plant.default_image)
-
-            # else:
-            #     plant.default_image = plant.get("default_image['medium_url']")
-            #     print('This is plant.default_image else', plant.default_image)
-
 
             print('This is plant', plant)
 

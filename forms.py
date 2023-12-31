@@ -14,39 +14,6 @@ class PlantSearchForm(FlaskForm):
     )
 
 
-class AddEditCafeForm(FlaskForm):
-    """Form for adding/editing a cafe."""
-
-    name = StringField(
-        "Name",
-        validators=[InputRequired(), Length(max=30)]
-    )
-
-    description = TextAreaField(
-        "Description",
-        validators=[Optional()]
-    )
-
-    url = StringField(
-        "URL",
-        validators=[Optional(), URL(), Length(max=255)]
-    )
-
-    address = StringField(
-        "Address",
-        validators=[InputRequired(), Length(max=50)]
-    )
-
-    city_code = SelectField(
-        "City Code"
-    )
-
-    image_url = StringField(
-        "image_url",
-        validators=[Optional(), URL(), Length(max=255)]
-    )
-
-
 class SignupForm(FlaskForm):
     """Form for registering/adding new user."""
 
