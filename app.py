@@ -247,15 +247,16 @@ def cafe_list():
     )
 
 
-@app.get('/cafes/<int:cafe_id>')
-def cafe_detail(cafe_id):
+@app.get('/plants/<int:plant_id>')
+def plant_detail(plant_id):
     """Show detail for cafe."""
 
-    cafe = Cafe.query.get_or_404(cafe_id)
+    plant = Plant.query.get_or_404(plant_id)
 
     return render_template(
-        'cafe/detail.html',
-        cafe=cafe,
+        'plant/detail.html',
+        plant=plant,
+        show_edit=g.user and g.user.admin,
     )
 
 
@@ -369,7 +370,7 @@ def likes_plant():
     # original location.
 
     print('We got into likes_plant on backend/server-side!')
-
+    print('This is plant_id', int(request.args.get('plant_id')))
     plant_id = int(request.args.get('plant_id'))
     print('This is plant_id', plant_id)
 

@@ -53,3 +53,23 @@ async function checkLikes(plantId) {
     else $(`#like-${plantId}`).show();
   }
 }
+
+
+$(async function plantDetailLikes(plantId) {
+  $("#unlike").on("click", unlike);
+  $("#like").on("click", like);
+
+  console.log('This is plantId in liking.js', plantId);
+
+  const response = await axios.get("/api/likes", {params: { plant_id: plantId }});
+  const result = response.data;
+  console.log(response.data);
+
+  if ("error" in result) {
+    console.log(result.error);
+  } else {
+    const likes = result.likes;
+    if (likes) $("#unlike").show();
+    else $("#like").show();
+  }
+});

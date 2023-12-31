@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+
+{% block title %} {{ plant.common_name }} {% endblock %}
+
+{% block content %}
+
+<div class="row justify-content-center">
+
+  <div class="col-10 col-sm-8 col-md-4 col-lg-3">
+    <img class="img-fluid mb-5" src="{{ plant.default_image }}">
+  </div>
+
+  <div class="col-12 col-sm-10 col-md-8">
+
+    <h1>{{ plant.common_name }}
+      <!-- like/unlike buttons & scripts -->
+
+      {% if g.user %}
+      <form class="ml-3 d-inline">
+        <button id="unlike" style="display: none"
+          class="btn-sm btn btn-outline-primary" formaction="/unlike">
+          Liked
+        </button>
+        <button id="like" style="display: none"
+          class="btn-sm btn btn-outline-secondary" formaction="/like">
+          Unliked
+        </button>
+      </form>
+      {% endif %}
+
+      <script>
+        plantId = plant.id
+        console.log('This is plantId in detail.html', plantId);
+      </script>
+
+      <script src="/static/js/liking.js"></script>
+
+
+
+
+      <!-- {% if g.user %}
+      <form class="ml-3 d-inline">
+
+        <input type="hidden" class="plant-id" name="plant-id" value="{{ plant.id }}">
+        <button id="unlike-{{ plant.id }}" style="display: none"
+          class="btn-sm btn btn-link">
+          <i class="bi bi-bookmark-fill"></i>
+        </button>
+        <button id="like-{{ plant.id }}" style="display: none"
+          class="btn-sm btn btn-link">
+          <i class="bi bi-bookmark"></i>
+        </button>
+
+      </form>
+      {% endif %}
+
+
+      <script>
+        plantId = {{ plant.id }};
+      </script>
+
+      <script src="/static/js/liking.js"></script> -->
+
+      <!-- end of like/unlike buttons & scripts -->
+    </h1>
+
+    <p class="lead">{{ plant.scientific_name[1:-1] }}</p>
+
+    <p>
+      {{ plant.cycle }}<br>
+      {{ plant.watering }}<br>
+      {{ plant.sunlight[1:-1] }}<br>
+    </p>
+
+    {% if show_edit %}
+    <p>
+      <a class="btn btn-outline-primary" href="/plants/{{ plant.id }}/edit">
+        Edit Cafe
+      </a>
+    </p>
+    {% endif %}
+
+  </div>
+
+  {% endblock %}
