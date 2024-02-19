@@ -20,6 +20,4 @@ Plant App is a plant search site that lets users search plants, view care detail
 * ![Render](https://img.shields.io/badge/-Render-333333?logo=render&logoColor=white&style=flat)
 
 ## Acknowledgements
-* [Rithm School](https://github.com/rithmschool)
-* [Julia Williamson](https://github.com/jswwWorks) for contributions
 * [Img Shields](https://shields.io/)
