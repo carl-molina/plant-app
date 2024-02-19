@@ -433,8 +433,8 @@ def handle_json_form_data():
                 flash(f'{new_plant.common_name} added w/ id {new_plant.id}')
 
             except IntegrityError:
-                flash(f'Could not add plant id {new_plant.id} to db. ' +
-                      f'Possibly already added {new_plant.common_name}.')
+                # flash(f'Could not add plant id {new_plant.id} to db. ' +
+                #       f'Possibly already added {new_plant.common_name}.')
                 db.session.rollback()
 
             # flash(f'{new_plant.common_name} added w/ id {new_plant.id}')
