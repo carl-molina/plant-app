@@ -1,6 +1,6 @@
 # Plant App
 
-Plant App is a plant search site that lets users search plants, view care details, and bookmark individual plants. Additional tech: Perenual API, Flask, Jinja, SQLAlchemy, JS, jQuery, Axios, WTForm, Flask Session, Bcrypt. This project was originally built in Dec 2023.
+Plant App is a plant search site that lets users search plants, view care details, and bookmark individual plants. Additional tech: Perenual API, Flask, Jinja, SQLAlchemy, JS, jQuery, Axios, WTForm, Flask Session, Bcrypt. This project was originally built in Dec 2023. You can find the site [here](https://www.plantapp.carlmolina.com/).
 
 ## Demo
 
