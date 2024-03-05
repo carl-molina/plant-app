@@ -12,8 +12,6 @@ from flask import (
 
 import requests
 
-
-
 from flask_debugtoolbar import DebugToolbarExtension
 from models import connect_db, db, User, Like, Plant
 from forms import (
@@ -361,7 +359,6 @@ def handle_user_unliking():
 # TODO: add plant detail route for Perenual API request
 
 
-print('Before entering handle_json_form_data')
 @app.post('/api/get-plant-list')
 def handle_json_form_data():
     """Takes in a JSON body with the following:
@@ -395,7 +392,6 @@ def handle_json_form_data():
                 "order": "asc",
             }
         )
-
 
         print('This is resp', resp)
         # for example, if we use API key and search for 'monstera':
