@@ -1,4 +1,4 @@
-"""Data models for Flask Cafe"""
+"""Data models for Plant App"""
 
 from flask_bcrypt import Bcrypt
 from flask_sqlalchemy import SQLAlchemy
