@@ -109,7 +109,7 @@ def signup():
     """Handle user signup.
     GET: shows registration form.
     POST: processes registration. If valid, adds user, logs them in, and
-    redirects to cafe list. If invalid, re-presents form w/ invalid message.
+    redirects to homepage. If invalid, re-presents form w/ invalid message.
     """
 
     do_logout()
@@ -145,7 +145,7 @@ def signup():
 def login():
     """Handles logging in user.
     GET: shows login form.
-    POST: processes login. If valid, logs user in and redirects to cafe list.
+    POST: processes login. If valid, logs user in and redirects to homepage.
     If invalid, re-presents form w/ invalid message.
     """
 
@@ -235,7 +235,7 @@ def edit_profile():
 
 @app.get('/plants/<int:plant_id>')
 def plant_detail(plant_id):
-    """Show detail for cafe."""
+    """Show detail for plant."""
 
     plant = Plant.query.get_or_404(plant_id)
 
@@ -271,7 +271,7 @@ def plant_detail(plant_id):
 
 #         except IntegrityError:
 #             flash("Could not save changes.")
-#             return render_template('/cafe/edit-form.html', form=form, plant=plant)
+#             return render_template('/plant/edit-form.html', form=form, plant=plant)
 
 #         flash(f'{plant.common_name} edited.')
 #         return redirect(url_for('plant_detail', plant_id=plant_id))
@@ -339,7 +339,7 @@ def handle_user_like():
 
 @app.post('/api/unlike')
 def handle_user_unliking():
-    """Handles user unliking a cafe."""
+    """Handles user unliking a plant."""
 
     if not g.user:
         return jsonify({"error": "Not logged in"})

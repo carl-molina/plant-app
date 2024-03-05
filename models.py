@@ -7,7 +7,6 @@ bcrypt = Bcrypt()
 db = SQLAlchemy()
 
 DEFAULT_PROFILE_IMG = '/static/images/default-pic.png'
-DEFAULT_CAFE_IMG = '/static/images/default-cafe.jpg'
 DEFAULT_IMG_URL = '/static/images/sadplant.png'
 DEFAULT_UPGRADE_TEXT = 'upgrade API plan'
 
@@ -171,7 +170,7 @@ class User(db.Model):
 
 
 class Like(db.Model):
-    """Tracks which user likes which cafe."""
+    """Tracks which user likes which plant."""
 
     __tablename__ = "likes"
 
