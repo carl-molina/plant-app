@@ -54,6 +54,15 @@ TEST_USER_DATA = dict(
     password="secretpassword",
 )
 
+TEST_USER_DATA_NEW = dict(
+    username="newuser",
+    email="new@user.com",
+    first_name="new",
+    last_name="user",
+    bio="This is a new test user.",
+    password="secretpassword2",
+)
+
 
 #######################################
 # homepage
@@ -144,4 +153,72 @@ class AuthViewsTestCase(TestCase):
         with app.test_client() as client:
             resp = client.get("/signup")
             self.assertIn(b'Sign Up', resp.data)
+            self.assertIn(b'Username', resp.data)
+            self.assertIn(b'First Name', resp.data)
+            self.assertIn(b'Last Name', resp.data)
+            self.assertIn(b'Bio', resp.data)
+            self.assertIn(b'Email', resp.data)
+            self.assertIn(b'Password', resp.data)
+            self.assertIn(b'Image URL', resp.data)
 
+            resp = client.post(
+                "/signup",
+                data=TEST_USER_DATA_NEW,
+                follow_redirects=True,
+            )
+
+            self.assertIn(b"You are signed up and logged in.", resp.data)
+            self.assertTrue(session.get(CURR_USER_KEY))
+
+    def test_signup_username_taken(self):
+        """Tests for invalid signup (username already taken)."""
+
+        with app.test_client() as client:
+            resp = client.get("/signup")
+            self.assertIn(b"Sign Up", resp.data)
+
+            resp = client.post(
+                "/signup",
+                data=TEST_USER_DATA,
+                follow_redirects=True,
+            )
+
+            self.assertIn(b"Username already taken", resp.data)
+
+    def test_login(self):
+        """Tests for user login."""
+
+        with app.test_client() as client:
+            resp = client.get("/login")
+            self.assertIn(b"Welcome Back!", resp.data)
+
+            resp = client.post(
+                "/login",
+                data={"username": "testname", "password": "secretpassword"},
+                follow_redirects=True,
+            )
+
+            self.assertIn(b"Hello, testname!", resp.data)
+            self.assertEqual(session.get(CURR_USER_KEY), self.user_id)
+
+    def test_login_invalid_credentials(self):
+        """Tests for invalid login credentials."""
+
+        with app.test_client() as client:
+            resp = client.post(
+                "/login",
+                data={"username": "testname", "password": "wrongpw"},
+                follow_redirects=True,
+            )
+
+            self.assertIn(b"Invalid credentials", resp.data)
+
+    def test_logout(self):
+        """Tests for user logout."""
+
+        with app.test_client() as client:
+            login_for_test(client, self.user_id)
+            resp = client.post("/logout", follow_redirects=True)
+
+            self.assertIn(b"You have successfully logged out.", resp.data)
+            self.assertEqual(session.get(CURR_USER_KEY), None)
