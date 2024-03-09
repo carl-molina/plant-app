@@ -222,3 +222,8 @@ class AuthViewsTestCase(TestCase):
 
             self.assertIn(b"You have successfully logged out.", resp.data)
             self.assertEqual(session.get(CURR_USER_KEY), None)
+
+class NavBarTestCase(TestCase):
+    """Tests navigation bar."""
+
+    def setUp(self):
