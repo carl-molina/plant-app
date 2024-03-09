@@ -227,3 +227,31 @@ class NavBarTestCase(TestCase):
     """Tests navigation bar."""
 
     def setUp(self):
+        """Before tests, add sample user."""
+
+        User.query.delete()
+
+        user = User.register(**TEST_USER_DATA)
+
+        db.session.commit()
+
+        self.user_id = user.id
+
+    def tearDown(self):
+        """After tests, remove all users."""
+
+        db.session.rollback()
+
+        User.query.delete()
+        db.session.commit()
+
+    def test_anon_navbar(self):
+        """Tests view of navbar when user not logged in."""
+
+        with app.test_client() as client:
+            resp = client.get('/')
+
+            self.assertEqual(resp.status_code, 200)
+            self.assertIn(b'Sign Up', resp.data)
+            self.assertIn(b'Log In', resp.data)
+            self.assertNotIn(b'Log Out', resp.data)
