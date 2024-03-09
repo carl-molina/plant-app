@@ -114,3 +114,34 @@ class UserModelTestCase(TestCase):
         # test that password gets bcrypt-hashed (all start w/$2b$)
         self.assertEqual(u.hashed_password[:4], "$2b$")
         db.session.rollback()
+
+
+class AuthViewsTestCase(TestCase):
+    """Tests for views on logging in/logging out/registration."""
+
+    def setUp(self):
+        """Before each test, add sample users."""
+
+        User.query.delete()
+
+        user = User.register(**TEST_USER_DATA)
+
+        db.session.commit()
+
+        self.user_id = user.id
+
+    def tearDown(self):
+        """After each test, remove all users."""
+
+        db.session.rollback()
+
+        User.query.delete()
+        db.session.commit()
+
+    def test_signup(self):
+        """Tests for successful user signup."""
+
+        with app.test_client() as client:
+            resp = client.get("/signup")
+            self.assertIn(b'Sign Up', resp.data)
+
