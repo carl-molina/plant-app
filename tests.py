@@ -255,3 +255,15 @@ class NavBarTestCase(TestCase):
             self.assertIn(b'Sign Up', resp.data)
             self.assertIn(b'Log In', resp.data)
             self.assertNotIn(b'Log Out', resp.data)
+
+    def test_logged_in_navbar(self):
+        """Tests view of navbar when user logged in."""
+
+        with app.test_client() as client:
+            login_for_test(client, self.user_id)
+            resp = client.get('/')
+
+            self.assertIn(b'Log Out', resp.data)
+            self.assertIn(b'test name', resp.data)
+            self.assertNotIn(b'Sign Up', resp.data)
+            self.assertNotIn(b'Log In', resp.data)
