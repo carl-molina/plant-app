@@ -91,13 +91,23 @@ def do_logout():
 # homepage
 
 
-@app.get("/")
+@app.get('/')
 def homepage():
     """Show homepage."""
 
     form = PlantSearchForm()
 
     return render_template('homepage.html', form=form)
+
+
+#######################################
+# about
+
+@app.get('/about')
+def about():
+    """Show about page."""
+
+    return render_template('about.html')
 
 
 #######################################
