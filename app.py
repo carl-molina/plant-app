@@ -111,6 +111,16 @@ def about():
 
 
 #######################################
+# features
+
+@app.get('/features')
+def features():
+    """Show features page."""
+
+    return render_template('features.html')
+
+
+#######################################
 # user signup/login/logout routes
 
 
