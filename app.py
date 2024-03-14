@@ -446,7 +446,7 @@ def handle_json_form_data():
 
             try:
                 db.session.commit()
-                flash(f'{new_plant.common_name} added w/ id {new_plant.id}')
+                # flash(f'{new_plant.common_name} added w/ id {new_plant.id}')
 
             except IntegrityError:
                 # flash(f'Could not add plant id {new_plant.id} to db. ' +
