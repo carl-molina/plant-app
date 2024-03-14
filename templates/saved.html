@@ -12,19 +12,17 @@
 
   <ul class="list-group">
     {% for plant in plants %}
-    <!-- <div class="plant-card"> -->
+    <section class="plant-card">
       <li class="list-group-item">
-        <img src="{{ plant.default_image }}">
-        <!-- <section class="plant-details"> -->
+        <div class="plant-details">
+          <img src="{{ plant.default_image }}">
           <a href="/plants/{{ plant.id }}">Common Name: {{ plant.common_name }}</a>
           <small class="ml-2 text-muted">Scientific Name: {{ plant.scientific_name[1:-1] }}</small>
-
-          <!-- Needs to be displayed next to img: -->
           <span>Cycle: {{ plant.cycle }}</span>
           <p>Cycle: {{ plant.cycle }}</p>
-        <!-- </section> -->
+        </div>
       </li>
-    <!-- </div> -->
+    </section>
     {% endfor %}
   </ul>
   {% else %}
