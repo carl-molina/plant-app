@@ -219,14 +219,6 @@ nav + .container {
   margin-left: 10px;
 }
 
-#warbler-hero {
-  height: 360px;
-  margin-top: -16px;
-  opacity: 0.7;
-  background-size: cover;
-  background-position: top center;
-}
-
 .full-width {
   width: 100vw;
   margin: 0 -50vw;
@@ -323,6 +315,16 @@ nav + .container {
 .user-location {
   color: #657786;
 }
+
+/* ===================== Plant card */
+
+/* .plant-card {
+  display: flex;
+  flex-direction: column;
+} */
+
+
+
 
 /* ==================== User cards on follower/following pages */
 
