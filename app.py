@@ -121,6 +121,20 @@ def features():
 
 
 #######################################
+# saved plants
+
+@app.get('/saved')
+def saved_plants():
+    """Show Saved Plants page."""
+
+    if not g.user:
+        flash(NOT_LOGGED_IN_MSG, 'danger')
+        return redirect(url_for('login'))
+
+    return render_template('saved.html', plants=g.user.liked_plants)
+
+
+#######################################
 # user signup/login/logout routes
 
 
