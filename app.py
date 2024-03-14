@@ -131,6 +131,8 @@ def saved_plants():
         flash(NOT_LOGGED_IN_MSG, 'danger')
         return redirect(url_for('login'))
 
+    print('liked_plants:', g.user.liked_plants)
+
     return render_template('saved.html', plants=g.user.liked_plants)
 
 
@@ -428,8 +430,6 @@ def handle_json_form_data():
         )
 
         print('This is resp', resp)
-        # for example, if we use API key and search for 'monstera':
-        # https://perenual.com/api/species-list?key=sk-wfpE6589044314e5d3581&q=monstera
 
         plant_data = resp.json()
         print('This is plant_data', plant_data)
