@@ -101,7 +101,7 @@ class SavedViewsTestCase(TestCase):
         User.query.delete()
         db.session.commit()
 
-    def test_homepage(self):
+    def test_saved_plants_page(self):
         with app.test_client() as client:
             login_for_test(client, self.user_id)
             resp = client.get("/saved", follow_redirects=True,)
