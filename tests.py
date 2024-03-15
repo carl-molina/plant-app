@@ -79,6 +79,37 @@ class HomepageViewsTestCase(TestCase):
 
 
 #######################################
+# saved plants page
+
+
+class SavedViewsTestCase(TestCase):
+    """Tests about Saved Plants page."""
+
+    def setUp(self):
+        """Before each test, add sample user."""
+
+        User.query.delete()
+        user = User.register(**TEST_USER_DATA)
+        db.session.commit()
+        self.user_id = user.id
+
+    def tearDown(self):
+        """After each test, remove all users."""
+
+        db.session.rollback()
+
+        User.query.delete()
+        db.session.commit()
+
+    def test_homepage(self):
+        with app.test_client() as client:
+            login_for_test(client, self.user_id)
+            resp = client.get("/saved", follow_redirects=True,)
+            self.assertIn(b'Test: saved.html loaded.', resp.data)
+            self.assertIn(b'Saved Plants page coming soon!', resp.data)
+
+
+#######################################
 # users
 
 class UserModelTestCase(TestCase):
