@@ -105,9 +105,32 @@ class SavedViewsTestCase(TestCase):
     def test_saved_plants_page(self):
         with app.test_client() as client:
             login_for_test(client, self.user_id)
-            resp = client.get("/saved", follow_redirects=True,)
+            resp = client.get("/saved", follow_redirects=True)
             self.assertIn(b'Test: saved.html loaded.', resp.data)
             self.assertIn(b'Saved Plants page coming soon!', resp.data)
+
+    def test_saved_plants_page_not_logged_in(self):
+        with app.test_client() as client:
+            resp = client.get("/saved", follow_redirects=True)
+            self.assertIn(b"You&#39;re not logged in.", resp.data)
+            self.assertIn(b"Welcome Back!", resp.data)
+            self.assertIn(b"Username", resp.data)
+            self.assertIn(b"Password", resp.data)
+            self.assertIn(b"Log In", resp.data)
+            self.assertIn(b"Cancel", resp.data)
+
+
+#######################################
+# features page
+
+
+class FeaturesViewsTestCast(TestCase):
+    """Tests about Features page."""
+
+    def test_features_page(self):
+        with app.test_client() as client:
+            resp = client.get("/features")
+            self.assertIn(b'Test: features.html loaded.', resp.data)
 
 
 #######################################
