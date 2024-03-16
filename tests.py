@@ -74,6 +74,7 @@ class HomepageViewsTestCase(TestCase):
     def test_homepage(self):
         with app.test_client() as client:
             resp = client.get("/")
+            self.assertIn(b'Test: homepage.html loaded.', resp.data)
             self.assertIn(b'Plant App', resp.data)
             self.assertIn(b'An App to Document Your Plant Journey', resp.data)
 
