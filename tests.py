@@ -245,6 +245,7 @@ class AuthViewsTestCase(TestCase):
 
         with app.test_client() as client:
             resp = client.get("/login")
+            self.assertIn(b"Test: login-form.html loaded.", resp.data)
             self.assertIn(b"Welcome Back!", resp.data)
 
             resp = client.post(
