@@ -279,6 +279,19 @@ class AuthViewsTestCase(TestCase):
             self.assertIn(b"You have successfully logged out.", resp.data)
             self.assertEqual(session.get(CURR_USER_KEY), None)
 
+    def test_profile(self):
+        """Tests for user profile page."""
+
+        with app.test_client() as client:
+            login_for_test(client, self.user_id)
+            resp = client.get("/profile", follow_redirects=True)
+
+            self.assertIn(b"Test: detail.html loaded.", resp.data)
+            self.assertIn(b"test name", resp.data)
+            self.assertIn(b"<p><b>Username:</b> testname</p>", resp.data)
+            self.assertIn(b"Edit Your Profile", resp.data)
+            self.assertIn(b"You have no liked plants.", resp.data)
+
 class NavBarTestCase(TestCase):
     """Tests navigation bar."""
 
