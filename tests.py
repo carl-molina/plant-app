@@ -207,6 +207,7 @@ class AuthViewsTestCase(TestCase):
 
         with app.test_client() as client:
             resp = client.get("/signup")
+            self.assertIn(b'Test: sign-form.html loaded.', resp.data)
             self.assertIn(b'Sign Up', resp.data)
             self.assertIn(b'Username', resp.data)
             self.assertIn(b'First Name', resp.data)
