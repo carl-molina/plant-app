@@ -287,7 +287,7 @@ class AuthViewsTestCase(TestCase):
             login_for_test(client, self.user_id)
             resp = client.get("/profile", follow_redirects=True)
 
-            self.assertIn(b"Test: detail.html loaded.", resp.data)
+            self.assertIn(b"Test: profile detail.html loaded.", resp.data)
             self.assertIn(b"test name", resp.data)
             self.assertIn(b"<p><b>Username:</b> testname</p>", resp.data)
             self.assertIn(b"Edit Your Profile", resp.data)
