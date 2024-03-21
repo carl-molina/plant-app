@@ -346,3 +346,5 @@ class NavBarTestCase(TestCase):
 
 #######################################
 # plants/plant
+
+# TODO: add view test for plant detail page here
