@@ -180,6 +180,9 @@ class UserModelTestCase(TestCase):
         db.session.rollback()
 
 
+#######################################
+# login/logout/registration
+
 class AuthViewsTestCase(TestCase):
     """Tests for views on logging in/logging out/registration."""
 
@@ -293,6 +296,9 @@ class AuthViewsTestCase(TestCase):
             self.assertIn(b"Edit Your Profile", resp.data)
             self.assertIn(b"You have no liked plants.", resp.data)
 
+#######################################
+# navbar
+
 class NavBarTestCase(TestCase):
     """Tests navigation bar."""
 
@@ -337,3 +343,6 @@ class NavBarTestCase(TestCase):
             self.assertIn(b'test name', resp.data)
             self.assertNotIn(b'Sign Up', resp.data)
             self.assertNotIn(b'Log In', resp.data)
+
+#######################################
+# plants/plant
