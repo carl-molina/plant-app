@@ -1,5 +1,5 @@
 from sqlalchemy.exc import IntegrityError
-from models import db, Plant, User, Like
+from models import db, Plant, User
 from app import app, CURR_USER_KEY
 from flask import session
 from unittest import TestCase
@@ -63,6 +63,14 @@ TEST_USER_DATA_NEW = dict(
     password="secretpassword2",
 )
 
+TEST_PLANT_DATA = dict(
+    common_name="Rose",
+    scientific_name="Rosa",
+    cycle="Perennial",
+    watering="Weekly",
+    sunlight="Full Sun",
+)
+
 
 #######################################
 # homepage
@@ -72,6 +80,7 @@ class HomepageViewsTestCase(TestCase):
     """Tests about homepage."""
 
     def test_homepage(self):
+        """Tests homepage positive views."""
         with app.test_client() as client:
             resp = client.get("/")
             self.assertIn(b'Test: homepage.html loaded.', resp.data)
@@ -103,6 +112,7 @@ class SavedViewsTestCase(TestCase):
         db.session.commit()
 
     def test_saved_plants_page(self):
+        """Tests for saved plants page on logged-in user."""
         with app.test_client() as client:
             login_for_test(client, self.user_id)
             resp = client.get("/saved", follow_redirects=True)
@@ -111,6 +121,7 @@ class SavedViewsTestCase(TestCase):
 
     def test_saved_plants_page_not_logged_in(self):
         with app.test_client() as client:
+            """Tests for saved plants page on not logged-in user."""
             resp = client.get("/saved", follow_redirects=True)
             self.assertIn(b"You&#39;re not logged in.", resp.data)
             self.assertIn(b"Welcome Back!", resp.data)
@@ -348,3 +359,34 @@ class NavBarTestCase(TestCase):
 # plants/plant
 
 # TODO: add view test for plant detail page here
+
+class PlantDetailViewsTestCase(TestCase):
+    """Tests for plant detail page."""
+
+    def setUp(self):
+        """Before each test, add sample plant."""
+
+        Plant.query.delete()
+        new_plant = Plant(**TEST_PLANT_DATA)
+        db.session.add(new_plant)
+        try:
+            db.session.commit()
+        except IntegrityError:
+            db.session.rollback()
+
+
+    def tearDown(self):
+        """After each test, remove all plants."""
+
+        db.session.rollback()
+
+        Plant.query.delete()
+        db.session.commit()
+
+    def test_view_plant_detail(self):
+        """Test viewing a specific plant detail page."""
+        with app.test_client() as client:
+            resp = client.get('/plants/1')
+            self.assertEqual(resp.status_code, 200)
+            self.assertIn(b'Rose', resp.data)
+            self.assertIn(b'Cycle: Perennial', resp.data)
